@@ -1,10 +1,22 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Register from "./components/pages/Auth/Register";
+import Login from "./components/pages/Auth/Login";
+import Home from "./components/pages/Home";
+import Problems from "./components/pages/problems/Problems";
+import ProblemPage from "./components/pages/problems/ProblemPage";
+
 function App() {
   return (
-    <div className="bg-black h-[100vh] flex flex-col justify-center">
-      <div className="flex justify-center">
-        <h1 className="text-white">Hello</h1>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/problemset" element={<Problems />} />
+        <Route path="/problems/:id" element={<ProblemPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
