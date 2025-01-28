@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   return (
-    <div className="h-16 px-6 py-2 bg-black text-white flex justify-between items-center">
+    <div className="h-16 px-6 py-2 bg-opacity-85 backdrop-blur-sm bg-black text-white flex justify-between items-center sticky top-0 z-50">
       <span className="">NeoCode</span>
       <div className="flex space-x-4">
         <Link to="/">Home</Link>
