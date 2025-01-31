@@ -35,7 +35,11 @@ const Register = () => {
 
       if (response.status === 201) {
         console.log("Registration successful:", response.data);
-        Cookies.set("jwt_token", data.token);
+        console.log(response);
+        console.log(response.data.user);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
+        Cookies.set("jwt_token", response.data.token);
+        // console.log("Cookies luffy: ", Cookies.get("jwt_token"));
         navigate("/"); // Navigate to the home page
       }
     } catch (error) {

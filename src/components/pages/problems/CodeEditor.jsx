@@ -15,17 +15,16 @@ const CodeEditor = ({ sampleIO }) => {
 
   const [language, setLanguage] = useState(languages[1]);
   const [theme, setTheme] = useState("vs-dark");
-  const [codeValue, setCodeValue] = useState(defaultCode[language]);
+  const [codeValues, setCodeValues] = useState({ ...defaultCode });
   const [customInput, setCustomInput] = useState("");
-  const [inputDisplay, setInputDisplay] = useState(
-    sampleIO[0].map((si) => Object.keys(si)).flat()[0]
-  );
+  const [inputDisplay, setInputDisplay] = useState("si1");
   const [isHovered, setIsHovered] = useState(null);
   const [outputValue, setOutputValue] = useState(null);
   const [isCodeRunning, setIsCodeRunning] = useState(false);
 
   useEffect(() => {
-    setCodeValue(defaultCode[language]);
+    setCodeValues(codeValues);
+    console.log("cdscs: ", codeValues[language]);
   }, [language]);
 
   const onMount = (editor) => {
@@ -34,26 +33,25 @@ const CodeEditor = ({ sampleIO }) => {
   };
 
   const selectedInputValue =
-    inputDisplay === "custom"
-      ? customInput
-      : sampleIO[0].find((si) => Object.keys(si)[0] === inputDisplay)?.[
-          inputDisplay
-        ] || "";
-
-  const selectedOutputValue =
-    sampleIO[1].find((si) =>
-      Object.entries(si).some(([key, value]) => key === inputDisplay && value)
-    )?.[inputDisplay] || "";
+    inputDisplay === "custom" ? customInput : sampleIO.input || "";
 
   const handleCustomInputChange = (e) => {
     setCustomInput(e.target.value);
   };
 
+  const handleLanguageChange = (e) => {
+    setCodeValues((prev) => ({
+      ...prev,
+      [language]: editorRef.current.getValue(),
+    }));
+    setLanguage(e.target.value);
+  };
+
   const runCode = async () => {
     const sourceCode = editorRef.current.getValue();
-    console.log(sourceCode, language, selectedInputValue);
+    // console.log(sourceCode, language, selectedInputValue);
     const token = Cookies.get("jwt_token");
-    // console.log("JWT Token:", token);
+    console.log("JWT Token:", token);
     try {
       setIsCodeRunning(true);
       const response = await axios.post(
@@ -106,12 +104,12 @@ const CodeEditor = ({ sampleIO }) => {
           <select
             id="language"
             value={language}
-            onChange={(e) => setLanguage(e.target.value)}
+            onChange={handleLanguageChange}
             className="rounded p-[6px] bg-gray-700 text-white"
           >
             {languages.map((lang) => (
               <option key={lang} value={lang}>
-                {lang}
+                {lang.toUpperCase()}
               </option>
             ))}
           </select>
@@ -150,8 +148,10 @@ const CodeEditor = ({ sampleIO }) => {
             width="100%"
             language={language}
             theme={theme}
-            value={codeValue}
-            onChange={(value) => setCodeValue(value)}
+            value={codeValues[language]}
+            onChange={(value) =>
+              setCodeValues((prev) => ({ ...prev, [language]: value }))
+            }
             onMount={onMount}
             options={{
               fontSize: 14,
@@ -168,11 +168,7 @@ const CodeEditor = ({ sampleIO }) => {
           onChange={(e) => setInputDisplay(e.target.value)}
         >
           <option value="custom">Custom Input</option>
-          {sampleIO[0].map((si, index) => (
-            <option key={index} value={Object.keys(si)[0]}>
-              {Object.keys(si)[0]}
-            </option>
-          ))}
+          <option value="si1">Sample Input 1</option>
         </select>
         <div className="flex gap-4">
           <Button
@@ -208,7 +204,7 @@ const CodeEditor = ({ sampleIO }) => {
             onChange={
               inputDisplay === "custom" ? handleCustomInputChange : undefined
             }
-            className="bg-slate-500 my-2 rounded-lg p-2 w-full"
+            className="bg-slate-500 my-2 rounded-lg p-2 h-[100px] w-full"
             disabled={inputDisplay !== "custom"}
           />
 
@@ -217,15 +213,7 @@ const CodeEditor = ({ sampleIO }) => {
           <textarea
             value={outputValue ?? ""}
             readOnly
-            className={`my-2 rounded-lg p-2 w-full ${
-              outputValue !== null &&
-              outputValue.trim() === selectedOutputValue.trim()
-                ? "bg-green-400"
-                : outputValue !== null &&
-                  outputValue.trim() !== selectedOutputValue.trim()
-                ? "bg-red-400"
-                : "bg-slate-500"
-            }`}
+            className={`my-2 rounded-lg p-2 w-full bg-slate-500`}
           />
         </div>
       </div>
@@ -240,8 +228,11 @@ export default CodeEditor;
 // class NeoCode {
 //     public static void main(String[] args){
 //         Scanner sc = new Scanner(System.in);
-//         int a = sc.nextInt();
-//         int b = sc.nextInt();
-//         System.out.println(Math.abs(-a-b));
+//         int t = sc.nextInt();
+//         while(t-->0){
+//             int a = sc.nextInt();
+//             int b = sc.nextInt();
+//             System.out.println(Math.abs(-a-b));
+//         }
 //     }
 // }

@@ -33,7 +33,9 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         Cookies.set("jwt_token", response.data.token);
+        console.log("Cookies luffy: ", Cookies.get("jwt_token"));
         navigate("/");
       }
     } catch (error) {
