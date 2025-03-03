@@ -5,7 +5,7 @@ const ProblemCard = ({ problemDetails, onProblemSelect }) => {
   const { id, title, score, difficulty } = problemDetails;
   return (
     <button
-      className="w-full flex items-center rounded-md my-3 px-3 py-2 bg-slate-300 hover:bg-slate-400"
+      className="w-full flex items-center rounded-lg my-3 px-3 py-2 bg-black/70 hover:bg-white/5 border border-white/10 text-white/80 hover:text-white transition duration-300"
       onClick={() => onProblemSelect(id)}
     >
       <div className="w-2/3 text-start">

@@ -35,14 +35,59 @@ const problems = [
   },
 ];
 
-const languages = ["cpp", "java", "python", "javascript"];
+const languages = ["cpp", "java", "python"];
 
 const defaultCode = {
-  cpp: "// Your code goes here",
-  java: "// Your code goes here",
-  python: "# Your code goes here",
-  javascript: "// Your code goes here",
+  cpp: `#include <iostream>
+using namespace std;
+
+int main() {
+    int t;
+    cin >> t;
+
+    while (t--) {
+        int a, b;
+        cin >> a >> b;
+        cout << (a - b) << endl;
+    }
+
+    return 0;
+}
+`,
+  java: `import java.util.*;
+
+class NeoCode {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        int t = sc.nextInt();
+        while(t-->0){
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+            System.out.println(Math.abs(-a-b));
+        }
+    }
+}`,
+  python: `t = int(input())
+
+for _ in range(t):
+    a, b = map(int, input().split())
+
+    print(a-b)
+`,
 };
+
+// const defaultCode = {
+//   cpp: "// Your code goes here",
+//   java: `import java.util.*;
+
+// class NeoCode {
+//     public static void main(String[] args){
+//         // Write your code here
+//     }
+// }`,
+//   python: "# Your code goes here",
+//   javascript: "// Your code goes here",
+// };
 
 const themes = [
   "light",
@@ -54,4 +99,39 @@ const themes = [
   // "blackboard",
 ];
 
-export { problems, languages, defaultCode, themes };
+const categories = [
+  "Array",
+  "String",
+  "Math",
+  "Dynamic Programming",
+  "Graph",
+  "Pattern",
+];
+
+const difficultyLevels = [
+  "cakewalk",
+  "easy",
+  "easymedium",
+  "medium",
+  "mediumhard",
+  "hard",
+];
+
+const scoreLevels = {
+  cakewalk: "10",
+  easy: "15",
+  easymedium: "20",
+  medium: "25",
+  mediumhard: "30",
+  hard: "35",
+};
+
+export {
+  problems,
+  languages,
+  defaultCode,
+  themes,
+  categories,
+  difficultyLevels,
+  scoreLevels,
+};

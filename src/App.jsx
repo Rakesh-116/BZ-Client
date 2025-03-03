@@ -9,24 +9,30 @@ import AdminRoute from "./components/pages/Auth/AdminRoute";
 import AdminDashboard from "./components/pages/Admin/AdminDashboard";
 import CreateProblem from "./components/pages/problems/CreateProblem";
 import NotFound from "./components/pages/NotFound";
+import MyCodePage from "./components/pages/MyCodePage";
+import Profile from "./components/pages/Profile";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home />} />
-        <Route path="/problemset" element={<Problems />} />
-        <Route path="/problems/:id" element={<ProblemPage />} />
-
-        {/* Admin-only Route */}
-        <Route element={<AdminRoute />}>
-          <Route path="/admin" element={<AdminDashboard />} />
-        </Route>
-        <Route path="/newproblem" element={<CreateProblem />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <UserProvider>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/problemset" element={<Problems />} />
+          <Route path="/problems/:id" element={<ProblemPage />} />
+          <Route path="/compiler" element={<MyCodePage />} />
+          <Route path="/profile" element={<Profile />} />
+          {/* Admin-only Route */}
+          <Route element={<AdminRoute />}>
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/newproblem" element={<CreateProblem />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 }

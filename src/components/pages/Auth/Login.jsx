@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoEyeSharp } from "react-icons/io5";
 import { LuEyeClosed } from "react-icons/lu";
 import axios from "axios";
@@ -10,6 +10,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = Cookies.get("neo_code_jwt_token");
+    if (token) {
+      navigate("/");
+      return;
+    }
+  }, []);
 
   const changeInput = (e) => {
     const { name, value } = e.target;
@@ -28,14 +36,17 @@ const Login = () => {
       return;
     }
     try {
-      const apiUrl = "/api/auth/login";
+      const apiUrl = "/api/user/auth/login";
       const response = await axios.post(apiUrl, { username, password });
 
       if (response.status === 200) {
         console.log("Login successful:", response.data);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        Cookies.set("jwt_token", response.data.token);
-        console.log("Cookies luffy: ", Cookies.get("jwt_token"));
+        Cookies.set("neo_code_jwt_token", response.data.token, {
+          expires: 4 * 60 * 60, // Expires in 4 hours
+        });
+
+        console.log("Cookies luffy: ", Cookies.get("neo_code_jwt_token"));
         navigate("/");
       }
     } catch (error) {
@@ -44,12 +55,12 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen bg-gray-900 bg-opacity-100 flex flex-col justify-center items-center">
+    <div className="h-screen bg-black/95 flex flex-col justify-center items-center">
       <form
         onSubmit={submitForm}
-        className="bg-blue-200 w-[40%] h-[70%] rounded-md flex flex-col justify-center items-center"
+        className="bg-black/50 backdrop-blur-md shadow-lg border border-white/30 w-[40%] h-[70%] rounded-md flex flex-col justify-center items-center"
       >
-        <h1 className="text-3xl text-center text-gray-900">Login</h1>
+        <h1 className="text-3xl text-center text-white/90">Login</h1>
         <div className="w-[50%] my-4 rounded-md bg-white">
           <input
             type="text"

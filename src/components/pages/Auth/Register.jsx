@@ -30,7 +30,7 @@ const Register = () => {
       return;
     }
     try {
-      const apiUrl = "/api/auth/register";
+      const apiUrl = "/api/user/auth/register";
       const response = await axios.post(apiUrl, { username, password, email });
 
       if (response.status === 201) {
@@ -38,8 +38,8 @@ const Register = () => {
         console.log(response);
         console.log(response.data.user);
         localStorage.setItem("user", JSON.stringify(response.data.user));
-        Cookies.set("jwt_token", response.data.token);
-        // console.log("Cookies luffy: ", Cookies.get("jwt_token"));
+        Cookies.set("neo_code_jwt_token", response.data.token);
+        // console.log("Cookies luffy: ", Cookies.get("neo_code_jwt_token"));
         navigate("/"); // Navigate to the home page
       }
     } catch (error) {
