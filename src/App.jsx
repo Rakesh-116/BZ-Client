@@ -9,7 +9,8 @@ import AdminRoute from "./components/pages/Auth/AdminRoute";
 import AdminDashboard from "./components/pages/Admin/AdminDashboard";
 import CreateProblem from "./components/pages/problems/CreateProblem";
 import NotFound from "./components/pages/NotFound";
-import MyCodePage from "./components/pages/MyCodePage";
+import MyCodePage from "./components/pages/MyCode/MyCodePage";
+import Submissions from "./components/pages/Submissions/SubmissionsPage";
 import Profile from "./components/pages/Profile";
 import { UserProvider } from "./context/UserContext";
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
+          <Route path="/submissions" element={<Submissions />} />
           <Route path="/problemset" element={<Problems />} />
           <Route path="/problems/:id" element={<ProblemPage />} />
           <Route path="/compiler" element={<MyCodePage />} />

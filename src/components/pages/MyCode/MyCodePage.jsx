@@ -1,10 +1,10 @@
 import { Editor } from "@monaco-editor/react";
 import { useRef, useState, useEffect } from "react";
-import Header from "./Header";
+import Header from "../Header";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { RxCross2 } from "react-icons/rx";
-import { languages, themes } from "../Common/constants";
+import { languages, themes } from "../../Common/constants";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Oval } from "react-loader-spinner";

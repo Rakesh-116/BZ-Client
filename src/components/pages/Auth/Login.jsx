@@ -43,7 +43,7 @@ const Login = () => {
         console.log("Login successful:", response.data);
         localStorage.setItem("user", JSON.stringify(response.data.user));
         Cookies.set("neo_code_jwt_token", response.data.token, {
-          expires: 4 * 60 * 60, // Expires in 4 hours
+          expires: 4 / 24, // Expires in 4 hours
         });
 
         console.log("Cookies luffy: ", Cookies.get("neo_code_jwt_token"));

@@ -78,7 +78,7 @@ const Problems = () => {
 
   const renderProblemsSuccess = () => (
     <div className="p-[4%]">
-      <h1 className="text-white font-medium text-[30px]">Problems</h1>
+      <h1 className="text-white text-2xl font-mono">Problems</h1>
       <ul>
         {problems.map((pro, index) => (
           <li key={index}>

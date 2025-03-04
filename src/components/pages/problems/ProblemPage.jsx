@@ -9,6 +9,7 @@ import Editor from "@monaco-editor/react";
 import CodeEditor from "./CodeEditor";
 import Header from "../Header";
 import { useUser } from "../../../context/UserContext";
+import { difficultyLevelsProperties } from "../../Common/constants";
 
 const apiStatusConstants = {
   initial: "INITIAL",
@@ -220,7 +221,11 @@ const ProblemPage = () => {
             <h3 className="my-2 text-2xl text-white font-bold">
               {problem.title}
             </h3>
-            <span className="p-[1px] px-[4px] bg-blue-400 text-white font-medium text-xs rounded-md">
+            <span
+              className={`p-[1px] px-[4px] bg-blue-400 text-white font-bold text-xs rounded-md ${
+                difficultyLevelsProperties[problem.difficulty].bgColor
+              } ${difficultyLevelsProperties[problem.difficulty].color}`}
+            >
               {problem.difficulty.toUpperCase()}
             </span>
             <Section title="Description" content={problem.description} />

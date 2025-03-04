@@ -1,5 +1,7 @@
 import React from "react";
 
+import { difficultyLevelsProperties } from "../../Common/constants";
+
 const ProblemCard = ({ problemDetails, onProblemSelect }) => {
   // console.log(problemDetails);
   const { id, title, score, difficulty } = problemDetails;
@@ -14,8 +16,10 @@ const ProblemCard = ({ problemDetails, onProblemSelect }) => {
       <div className="w-1/3 flex justify-end items-center gap-3">
         <p className="text-sm ">Score: {score}</p>
         <p className="text-sm">
-          Difficulty:{" "}
-          <span className="p-[1px] px-[4px] bg-blue-400 text-white font-medium text-xs rounded-md">
+          Difficulty:{"  "} &nbsp;
+          <span
+            className={`p-[1px] px-[4px] text-white font-bold text-xs rounded-md bg- ${difficultyLevelsProperties[difficulty].bgColor} ${difficultyLevelsProperties[difficulty].color}`}
+          >
             {difficulty.toUpperCase()}
           </span>
         </p>

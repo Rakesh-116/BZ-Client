@@ -7,7 +7,7 @@ import {
   categories,
   difficultyLevels,
   languages,
-  scoreLevels,
+  difficultyLevelsProperties,
 } from "../../Common/constants";
 import Editor from "@monaco-editor/react";
 
@@ -30,7 +30,7 @@ const CreateProblem = () => {
       output: "",
     },
     difficulty: difficultyLevels[0],
-    score: scoreLevels[difficultyLevels[0]],
+    score: difficultyLevelsProperties[difficultyLevels[0].toLowerCase()].score,
     hidden_testcases: [
       {
         input: "",
@@ -56,7 +56,7 @@ const CreateProblem = () => {
       setFormData({
         ...formData,
         difficulty: e.target.value,
-        score: scoreLevels[e.target.value],
+        score: difficultyLevelsProperties[e.target.value.toLowerCase()].score,
       });
     } else if (nestedField) {
       setFormData({
