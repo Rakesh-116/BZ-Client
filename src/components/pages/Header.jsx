@@ -94,16 +94,7 @@ const Header = () => {
           >
             Home
           </Link>
-          <Link
-            to="/submissions"
-            className={`hover:text-white ${
-              location.pathname === "/submissions"
-                ? "text-white"
-                : "text-white/70"
-            }`}
-          >
-            Submissions
-          </Link>
+
           <Link
             to="/problemset"
             className={`hover:text-white ${
@@ -114,7 +105,18 @@ const Header = () => {
           >
             Problems
           </Link>
-
+          {isLoggedIn && (
+            <Link
+              to="/submissions"
+              className={`hover:text-white ${
+                location.pathname === "/submissions"
+                  ? "text-white"
+                  : "text-white/70"
+              }`}
+            >
+              Submissions
+            </Link>
+          )}
           <Link
             to="/compiler"
             className={`hover:text-white ${

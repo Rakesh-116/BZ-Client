@@ -6,10 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { Oval } from "react-loader-spinner";
 import { RxCross2 } from "react-icons/rx";
 import { CiPlay1 } from "react-icons/ci";
+import { RiResetLeftLine } from "react-icons/ri";
 
 import { languages, themes, defaultCode } from "../../Common/constants";
+import SubmissionModal from "../Submissions/SubmissionViewPage.jsx";
 import Button from "../../Common/Button";
-import { RiResetLeftLine } from "react-icons/ri";
 
 const CodeEditor = ({
   problemId,
@@ -47,7 +48,7 @@ const CodeEditor = ({
     } else {
       setCodeValues(codeValues);
     }
-  }, [openEditorData, language]);
+  }, [openEditorData]);
 
   // useEffect(() => {
   //   setCodeValues(codeValues);
@@ -181,8 +182,8 @@ const CodeEditor = ({
           },
         }
       );
-      console.log(response);
       const finalResult = response.data.insertHiddenTestcasesResult.rows[0];
+      console.log("luffy final:", finalResult);
       setSubmissionResult(finalResult);
     } catch (error) {
       console.error("Error: ", error.response.data.message);
@@ -225,106 +226,106 @@ const CodeEditor = ({
     }
   };
 
-  const renderOpenModal = () => {
-    console.log(submissionResult);
-    const sourceCode = editorRef.current.getValue();
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
-        <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-2/3 text-center">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-semibold">Submission</h2>
-            <Button
-              className="text-white"
-              onClick={() => {
-                setOpenModal(false);
-                setOutputValue(null);
-              }}
-            >
-              <RxCross2 />
-            </Button>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-600">
-              <thead>
-                <tr className="bg-gray-700">
-                  <th className="border border-gray-600 px-4 py-2">Verdict</th>
-                  <th className="border border-gray-600 px-4 py-2">Language</th>
-                  <th className="border border-gray-600 px-4 py-2">Time</th>
-                  <th className="border border-gray-600 px-4 py-2">
-                    Submission Id
-                  </th>
-                  <th className="border border-gray-600 px-4 py-2">
-                    Subtask Info
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="bg-gray-800">
-                  <td className="border border-gray-600 px-4 py-2 text-[12px]">
-                    {submissionResult ? (
-                      <h1
-                        className={`font-bold ${
-                          submissionResult.verdict === "ACCEPTED"
-                            ? "text-green-500"
-                            : "text-red-500"
-                        }`}
-                      >
-                        {submissionResult.verdict}
-                      </h1>
-                    ) : (
-                      <div className="flex justify-center">
-                        {renderLoader(30, 30)}
-                      </div>
-                    )}
-                  </td>
-                  <td className="border border-gray-600 px-4 py-2 text-[12px]">
-                    {language.toUpperCase()}
-                  </td>
-                  <td className="border border-gray-600 px-4 py-2 text-[12px]">
-                    {new Date().toLocaleString()}
-                  </td>
-                  <td className="border border-gray-600 px-4 py-2 text-[12px]">
-                    {submissionResult ? (
-                      submissionResult.id
-                    ) : (
-                      <div className="flex justify-center">
-                        {renderLoader(30, 30)}
-                      </div>
-                    )}
-                  </td>
-                  <td className="border border-gray-600 px-4 py-2 text-[12px]">
-                    {submissionResult ? (
-                      submissionResult.subtaskInfo
-                    ) : (
-                      <div className="flex justify-center">
-                        {renderLoader(30, 30)}
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <div className="my-4">
-              <Editor
-                height="60vh"
-                width="100%"
-                language={language}
-                theme={theme}
-                value={sourceCode}
-                options={{
-                  fontSize: 16,
-                  minimap: { enabled: false },
-                  readOnly: true,
-                  padding: { top: 10, bottom: 10 },
-                  scrollBeyondLastLine: false,
-                }}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  // const renderOpenModal = () => {
+  //   console.log(submissionResult);
+  //   const sourceCode = editorRef.current.getValue();
+  //   return (
+  //     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+  //       <div className="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-2/3 text-center">
+  //         <div className="flex justify-between items-center mb-6">
+  //           <h2 className="text-xl font-semibold">Submission</h2>
+  //           <Button
+  //             className="text-white"
+  //             onClick={() => {
+  //               setOpenModal(false);
+  //               setOutputValue(null);
+  //             }}
+  //           >
+  //             <RxCross2 />
+  //           </Button>
+  //         </div>
+  //         <div className="overflow-x-auto">
+  //           <table className="w-full border-collapse border border-gray-600">
+  //             <thead>
+  //               <tr className="bg-gray-700">
+  //                 <th className="border border-gray-600 px-4 py-2">Verdict</th>
+  //                 <th className="border border-gray-600 px-4 py-2">Language</th>
+  //                 <th className="border border-gray-600 px-4 py-2">Time</th>
+  //                 <th className="border border-gray-600 px-4 py-2">
+  //                   Submission Id
+  //                 </th>
+  //                 <th className="border border-gray-600 px-4 py-2">
+  //                   Subtask Info
+  //                 </th>
+  //               </tr>
+  //             </thead>
+  //             <tbody>
+  //               <tr className="bg-gray-800">
+  //                 <td className="border border-gray-600 px-4 py-2 text-[12px]">
+  //                   {submissionResult ? (
+  //                     <h1
+  //                       className={`font-bold ${
+  //                         submissionResult.verdict === "ACCEPTED"
+  //                           ? "text-green-500"
+  //                           : "text-red-500"
+  //                       }`}
+  //                     >
+  //                       {submissionResult.verdict}
+  //                     </h1>
+  //                   ) : (
+  //                     <div className="flex justify-center">
+  //                       {renderLoader(30, 30)}
+  //                     </div>
+  //                   )}
+  //                 </td>
+  //                 <td className="border border-gray-600 px-4 py-2 text-[12px]">
+  //                   {language.toUpperCase()}
+  //                 </td>
+  //                 <td className="border border-gray-600 px-4 py-2 text-[12px]">
+  //                   {new Date().toLocaleString()}
+  //                 </td>
+  //                 <td className="border border-gray-600 px-4 py-2 text-[12px]">
+  //                   {submissionResult ? (
+  //                     submissionResult.id
+  //                   ) : (
+  //                     <div className="flex justify-center">
+  //                       {renderLoader(30, 30)}
+  //                     </div>
+  //                   )}
+  //                 </td>
+  //                 <td className="border border-gray-600 px-4 py-2 text-[12px]">
+  //                   {submissionResult ? (
+  //                     submissionResult.subtaskInfo
+  //                   ) : (
+  //                     <div className="flex justify-center">
+  //                       {renderLoader(30, 30)}
+  //                     </div>
+  //                   )}
+  //                 </td>
+  //               </tr>
+  //             </tbody>
+  //           </table>
+  //           <div className="my-4">
+  //             <Editor
+  //               height="60vh"
+  //               width="100%"
+  //               language={language}
+  //               theme={theme}
+  //               value={sourceCode}
+  //               options={{
+  //                 fontSize: 16,
+  //                 minimap: { enabled: false },
+  //                 readOnly: true,
+  //                 padding: { top: 10, bottom: 10 },
+  //                 scrollBeyondLastLine: false,
+  //               }}
+  //             />
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };
 
   const renderLoader = (height = 50, width = 50) => (
     <Oval
@@ -340,7 +341,16 @@ const CodeEditor = ({
     <div className="flex flex-col h-full w-full rounded-md px-4">
       <div className="flex justify-center items-center w-full h-full">
         {openProhibitedKeyModal && renderProhibitedKeyModal()}
-        {openModal && renderOpenModal()}
+        {openModal && (
+          <SubmissionModal
+            submissionResult={submissionResult}
+            editorRef={editorRef}
+            language={language}
+            theme={theme}
+            setOpenModal={setOpenModal}
+            setOutputValue={setOutputValue}
+          />
+        )}
       </div>
       <div className="w-full flex flex-col">
         <div className="px-4 bg-black border-b border-white/20 rounded-t-xl h-16 flex gap-4 items-center">

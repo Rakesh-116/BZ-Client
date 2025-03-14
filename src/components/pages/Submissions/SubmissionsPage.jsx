@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header";
 import { pagesCount } from "../../Common/constants";
+import SubmissionModal from "./SubmissionViewPage";
 
 const Submissions = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -11,6 +12,8 @@ const Submissions = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [selectedSubmission, setSelectedSubmission] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
 
   const fetchSubmissions = async () => {
@@ -41,6 +44,16 @@ const Submissions = () => {
     fetchSubmissions();
   }, [page, recordsPerPage]);
 
+  const renderLoader = (height = 50, width = 50) => (
+    <Oval
+      height={height}
+      width={width}
+      color="#4fa94d"
+      strokeWidth={4}
+      strokeWidthSecondary={4}
+    />
+  );
+
   return (
     <div className="bg-black/95 min-h-screen px-10 pb-10 text-white">
       <Header />
@@ -56,7 +69,7 @@ const Submissions = () => {
                 setPage(1);
                 setRecordsPerPage(Number(e.target.value));
               }}
-              className="bg-gray-800 text-white p-2 rounded-md border border-gray-700 ml-2"
+              className="bg-black/70 text-white p-2 rounded-md border border-gray-700 ml-2"
             >
               {pagesCount.map((count) => (
                 <option key={count} value={count}>
@@ -75,10 +88,24 @@ const Submissions = () => {
 
         {submissions.length > 0 ? (
           <div className="space-y-4">
+            {openModal && (
+              <>
+                {console.log(selectedSubmission)}
+                <SubmissionModal
+                  submissionResult={selectedSubmission}
+                  theme="vs-dark"
+                  setOpenModal={setOpenModal}
+                />
+              </>
+            )}
             {submissions.map((submission, index) => (
               <div
                 key={index}
-                className="bg-gray-900 p-3 rounded-lg shadow-lg border border-gray-800 w-full flex flex-col md:flex-row items-center md:items-start justify-between"
+                className="bg-black/70 hover:bg-white/5 p-3 rounded-lg shadow-lg border border-white/10 w-full flex flex-col md:flex-row items-center md:items-start justify-between cursor-pointer"
+                onClick={() => {
+                  setSelectedSubmission(submission);
+                  setOpenModal(true);
+                }}
               >
                 <div className="flex-1">
                   <h2 className="text-lg font-semibold">
@@ -118,7 +145,7 @@ const Submissions = () => {
 
         {totalPages > 1 && (
           <div className="flex justify-center items-center transition-all bg-transparent w-full mt-28">
-            <div className="fixed bottom-10 w-[90%] bg-black/50 p-4 flex justify-center items-center space-x-2 border border-white/20 rounded-xl backdrop-blur-md">
+            <div className="fixed bottom-10 w-[90%] bg-black/50 p-4 flex justify-between items-center space-x-2 border border-white/20 rounded-xl backdrop-blur-md">
               <button
                 onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                 disabled={page === 1}
@@ -131,71 +158,75 @@ const Submissions = () => {
                 Prev
               </button>
 
-              {totalPages <= 10 ? (
-                [...Array(totalPages)].map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setPage(i + 1)}
-                    className={`px-3 py-2 rounded-md ${
-                      page === i + 1
-                        ? "bg-gray-700 text-white font-bold"
-                        : "border border-gray-500 text-gray-300 hover:bg-gray-700"
-                    } transition`}
-                  >
-                    {i + 1}
-                  </button>
-                ))
-              ) : (
-                <>
-                  <button
-                    onClick={() => setPage(1)}
-                    className={`px-3 py-2 rounded-md ${
-                      page === 1
-                        ? "bg-gray-700 text-white font-bold"
-                        : "border border-gray-500 text-gray-300 hover:bg-gray-700"
-                    } transition`}
-                  >
-                    1
-                  </button>
+              <div className="flex space-x-4">
+                {totalPages <= 10 ? (
+                  [...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setPage(i + 1)}
+                      className={`px-3 py-2 rounded-md ${
+                        page === i + 1
+                          ? "bg-gray-700 text-white font-bold"
+                          : "border border-gray-500 text-gray-300 hover:bg-gray-700"
+                      } transition`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))
+                ) : (
+                  <>
+                    <button
+                      onClick={() => setPage(1)}
+                      className={`px-3 py-2 rounded-md ${
+                        page === 1
+                          ? "bg-gray-700 text-white font-bold"
+                          : "border border-gray-500 text-gray-300 hover:bg-gray-700"
+                      } transition`}
+                    >
+                      1
+                    </button>
 
-                  {/* Dots before current page */}
-                  {page > 3 && <span className="text-gray-400 px-2">...</span>}
+                    {/* Dots before current page */}
+                    {page > 3 && (
+                      <span className="text-gray-400 px-2">...</span>
+                    )}
 
-                  {/* Middle pages (dynamic range) */}
-                  {Array.from({ length: 5 }, (_, i) => page - 2 + i)
-                    .filter((p) => p > 1 && p < totalPages)
-                    .map((p) => (
-                      <button
-                        key={p}
-                        onClick={() => setPage(p)}
-                        className={`px-3 py-2 rounded-md ${
-                          page === p
-                            ? "bg-gray-700 text-white font-bold"
-                            : "border border-gray-500 text-gray-300 hover:bg-gray-700"
-                        } transition`}
-                      >
-                        {p}
-                      </button>
-                    ))}
+                    {/* Middle pages (dynamic range) */}
+                    {Array.from({ length: 5 }, (_, i) => page - 2 + i)
+                      .filter((p) => p > 1 && p < totalPages)
+                      .map((p) => (
+                        <button
+                          key={p}
+                          onClick={() => setPage(p)}
+                          className={`px-3 py-2 rounded-md ${
+                            page === p
+                              ? "bg-gray-700 text-white font-bold"
+                              : "border border-gray-500 text-gray-300 hover:bg-gray-700"
+                          } transition`}
+                        >
+                          {p}
+                        </button>
+                      ))}
 
-                  {/* Dots after current page */}
-                  {page < totalPages - 3 && (
-                    <span className="text-gray-400 px-2">...</span>
-                  )}
+                    {/* Dots after current page */}
+                    {page < totalPages - 3 && (
+                      <span className="text-gray-400 px-2">...</span>
+                    )}
 
-                  {/* Last Page */}
-                  <button
-                    onClick={() => setPage(totalPages)}
-                    className={`px-3 py-2 rounded-md ${
-                      page === totalPages
-                        ? "bg-gray-700 text-white font-bold"
-                        : "border border-gray-500 text-gray-300 hover:bg-gray-700"
-                    } transition`}
-                  >
-                    {totalPages}
-                  </button>
-                </>
-              )}
+                    {/* Last Page */}
+                    <button
+                      onClick={() => setPage(totalPages)}
+                      className={`px-3 py-2 rounded-md ${
+                        page === totalPages
+                          ? "bg-gray-700 text-white font-bold"
+                          : "border border-gray-500 text-gray-300 hover:bg-gray-700"
+                      } transition`}
+                    >
+                      {totalPages}
+                    </button>
+                  </>
+                )}
+              </div>
 
               <button
                 onClick={() =>

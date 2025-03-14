@@ -222,9 +222,13 @@ const ProblemPage = () => {
               {problem.title}
             </h3>
             <span
-              className={`p-[1px] px-[4px] bg-blue-400 text-white font-bold text-xs rounded-md ${
-                difficultyLevelsProperties[problem.difficulty].bgColor
-              } ${difficultyLevelsProperties[problem.difficulty].color}`}
+              className={`p-[1px] px-[4px] font-bold text-xs rounded-md ${
+                difficultyLevelsProperties[problem.difficulty.toLowerCase()]
+                  .bgColor
+              } ${
+                difficultyLevelsProperties[problem.difficulty.toLowerCase()]
+                  .color
+              }`}
             >
               {problem.difficulty.toUpperCase()}
             </span>
@@ -382,7 +386,7 @@ const ProblemPage = () => {
                       ).toLocaleString()}
                     </p>
                   </div>
-                  <div className="">
+                  <div className="bg-black/70 p-2 rounded-lg border border-white/20">
                     <button
                       className="text-blue-600"
                       onClick={() =>
